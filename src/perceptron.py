@@ -1,9 +1,4 @@
 import numpy as np
-X=np.array([1,2])
-W=np.array([0.5,-1])
-b=1;
-y=W@X+b
-print(y)
 
 class Perceptron:
     def __init__(self,n_inputs, learning_rate):
@@ -12,9 +7,32 @@ class Perceptron:
 
         self.weights=np.random.randn(n_inputs)
         self.bias=float(np.random.randn())
+
     def forward(self,X):
-        return self.weights@X+self.bias
+        return X@self.weights+self.bias
+    
+    def compute_loss(self,y_pred,y_true):
+        errors=y_pred-y_true
+        return np.mean(errors**2)
         
     def train(self, X,y,epochs):
+        loss_history=[]
+        N=X.shape[0]
         for epoch in range (epochs):
             y_pred=self.forward(X)
+            loss=self.compute_loss(y_pred,y)
+            loss_history.append(loss)
+            errors=y_pred-y
+            grad_w=(2/N)*(X.T@errors)
+            grad_b=(2/N)*errors.sum()
+            self.weights-=self.learning_rate*grad_w
+            self.bias-=self.learning_rate*grad_b
+        return loss_history
+    
+    def predict(self, X_new):
+        
+        return self.forward(X_new)
+    
+
+
+
