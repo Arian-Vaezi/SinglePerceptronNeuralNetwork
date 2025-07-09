@@ -27,10 +27,11 @@ class Perceptron:
             grad_b=(2/N)*errors.sum()
             self.weights-=self.learning_rate*grad_w
             self.bias-=self.learning_rate*grad_b
+        # print(loss_history)
         return loss_history
     
     def predict(self, X_new):
-        
+
         return self.forward(X_new)
     
 
